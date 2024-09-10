@@ -1,0 +1,31 @@
+name: Se
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Install
+      run: pip3 install pyngrok
+    - name: Check Installation
+      run: ngrok
+    - name: Auth
+      run: ngrok authtoken $Env:AUTH_TOKEN
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+    - name: Enable TS
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+    - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+    - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+    - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "Windows@10" -Force)
+    - name: Modify Registry Settings
+      run: |
+        reg add "HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System" /v SystemBiosVersion /t REG_DWORD /d 1 /f
+        reg add "HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System" /v SystemBiosDate /t REG_DWORD /d 1 /f
+    - name: Create Tunnel
+      run: ngrok tcp --region ap 3389
+      
+
+    
