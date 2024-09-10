@@ -1,0 +1,21 @@
+
+name: runmq
+on: 
+  workflow_dispatch:
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: one
+        run: |
+          sudo apt update -y
+          sudo apt install git wget -y
+          curl -fsSL https://tailscale.com/install.sh | sh
+          sudo tailscale up
+          git clone https://github.com/jshruwyd/windows.git
+          cd windows
+          docker build -t dockerd .
+      - name: two
+        run: |
+          docker run -i --name windows -p 3389:3389/tcp -p 8006:8006 -e USERNAME=UserTest --device=/dev/kvm -v  /mnt:/storage --cap-add NET_ADMIN --stop-timeout 99999990 dockerd
