@@ -1,0 +1,20 @@
+name: runma
+on: 
+  workflow_dispatch:
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: one
+        run: |
+          sudo apt update -y
+          sudo apt install git wget -y
+          curl -fsSL https://tailscale.com/install.sh | sh
+          sudo tailscale up
+          git clone https://github.com/dockurr/macos.git
+          cd macos
+          docker build -t dockerd .
+      - name: two
+        run: |
+          docker run -it --name m -p 3389:3389/tcp -p 8006:8006 --device=/dev/kvm --device=/dev/net/tun --cap-add NET_ADMIN --stop-timeout 99999990 dockerd
