@@ -2,12 +2,13 @@
 name: runma
 on: 
   workflow_dispatch:
- 
+defaults:
+  run:
+    shell: bash
+    
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: one
-        run: |
-          sudo apt update -y
-          source configure.sh
+        run: source configure.sh
