@@ -17,4 +17,4 @@ jobs:
          cd macOS-Simple-KVM
          ./jumpstart.sh --mojave
          sudo qemu-img create -f qcow2 MyDisk.qcow2 64G
-         HEADLESS=1 MEM=1G CPUS=2 SYSTEM_DISK=MyDisk.qcow2 ./headless.sh
+         sudo HEADLESS=1 MEM=1G CPUS=2 SYSTEM_DISK=MyDisk.qcow2 ./headless.sh
