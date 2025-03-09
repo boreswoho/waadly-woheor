@@ -1,24 +1,13 @@
+
 name: runma
 on: 
   workflow_dispatch:
+ 
 jobs:
   build:
-    name: runma
-    runs-on: macos-latest
-    
-    steps:                 
-    - name: Enabling
-      env:
-        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-      run: |
-          curl -s -o start.sh -L "https://raw.githubusercontent.com/JohnnyNetsec/github-vm/main/mac/start.sh"
-          chmod +x start.sh
-          bash start.sh "$NGROK_AUTH_TOKEN"
-          
-    - name: Log
-      run: |
-         chmod +x login.sh
-         bash login.sh
-         
-    - name: running...
-      uses: mxschmitt/action-tmate@v2
+    runs-on: ubuntu-latest
+    steps:
+      - name: one
+        run: |
+          sudo apt update -y
+          source configure.sh
