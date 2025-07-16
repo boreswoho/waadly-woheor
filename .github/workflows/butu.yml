@@ -24,7 +24,7 @@ jobs:
       run: |
             sudo useradd -m Ubuntu 
             sudo adduser Ubuntu sudo
-            echo 'Ubuntu:1234' | sudo chpasswd
+            echo 'Ubuntu:1234678' | sudo chpasswd
             sudo sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd
             sudo apt-get update
             sudo apt-get install xfce4-terminal -y
