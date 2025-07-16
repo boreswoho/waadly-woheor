@@ -23,7 +23,7 @@ jobs:
         echo 'ash:ash' | sudo chpasswd
 
     - name: Installing env(wait for 10 min)
-      run:
+      run: |
         sudo apt update
         sudo apt install -y expect ubuntu-desktop
 
