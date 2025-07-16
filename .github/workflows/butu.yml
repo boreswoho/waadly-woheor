@@ -1,9 +1,9 @@
-name: ubuntutest
+name: unbuntutest
 on: 
   workflow_dispatch:
     inputs:
       auth:
-        description: 'g code'
+        description: 'Authorization Code'
         required: true
         default: 'paste your code here'
 
@@ -22,12 +22,12 @@ jobs:
         sudo adduser ash sudo
         echo 'ash:ash' | sudo chpasswd
 
-    - name: Installing env(wait for 10 min)
+    - name: Installing environment (wait for 10 min)
       run: |
         sudo apt update
         sudo apt install -y expect ubuntu-desktop
 
-    - name: Installing headless and dependencies
+    - name: Installing dependencies
       run: |
         sudo useradd -m Ubuntu
         sudo adduser Ubuntu sudo
@@ -39,6 +39,7 @@ jobs:
         
         curl https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/chrome-remote-desktop.gpg
         echo "deb [arch=amd64] https://dl.google.com/linux/chrome-remote-desktop/deb stable main" | sudo tee /etc/apt/sources.list.d/chrome-remote-desktop.list
+        
         
         
         sudo apt-get update
@@ -56,23 +57,23 @@ jobs:
         sudo dpkg --install google-chrome-stable_current_amd64.deb
         sudo apt install --assume-yes --fix-broken
         
-        # Installing additional utilities
+        
         sudo apt install python3-pip -y
         sudo apt-get install -y xvfb
         pip3 install nbformat gdown pika
         sudo apt install nautilus nano -y
         
-        # Installing Visual Studio Code
+        
         wget -O code.deb https://code.visualstudio.com/sha/download\?build\=stable\&os\=linux-deb-x64
         sudo dpkg --install code.deb
         
-        # Installing NVM (Node Version Manager)
+        
         wget https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh
         bash install.sh
         source ~/.profile
         sudo apt install --assume-yes --fix-broken
 
-    - name: Fix Group Not Found Error
+    - name: Fix p Group Not Found Error
       run: |
         sudo groupadd chrome-remote-desktop || true
         sudo usermod -aG chrome-remote-desktop $USER
@@ -82,7 +83,7 @@ jobs:
         echo "${{ github.event.inputs.auth }}" > setup.sh
         chmod +x setup.sh
 
-    - name: Initialize 
+    - name: Initialize
       run: |   
         expect -c '
         spawn ./setup.sh
@@ -93,14 +94,11 @@ jobs:
         expect eof
         '
 
-    - name: SSH Tunnel over ng
+    - name: ngr
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
       run: |
            curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
-           ngrok config add-authtoken $NGROK_AUTH_TOKEN
-           sudo ufw allow 22/tcp
-           ngrok tcp 22 https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
            ngrok config add-authtoken $NGROK_AUTH_TOKEN
            sudo ufw allow 22/tcp
            ngrok tcp 22
