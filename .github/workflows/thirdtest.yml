@@ -8,11 +8,12 @@ jobs:
 
     steps:
     - name: Download Zrok
-      run: Invoke-WebRequest https://github.com/openziti/zrok/releases/latest/download/zrok.windows.amd64.exe -OutFile zrok.exe
+      run: Invoke-WebRequest https://github.com/openziti/zrok/releases/v1.0.7/download/zrok_1.0.7_windows_amd64.tar.gz -OutFile zrok.tar.gz
     - name: Enable Zrok Headless
       env:
         ZROK_INVITE_TOKEN: ${{ secrets.ZROK_INVITE_TOKEN }}
       run: |
+        tar -xf zrok.tar.gz zrok.exe
         mkdir $HOME\.zrok
         .\zrok.exe enable --headless --invite-token $Env:ZROK_INVITE_TOKEN
     - name: Enable TS
