@@ -1,4 +1,4 @@
-name: Se
+name: Ze
 
 on: workflow_dispatch
 
@@ -9,7 +9,6 @@ jobs:
     steps:
     - name: Download Zrok
       run: Invoke-WebRequest https://github.com/openziti/zrok/releases/latest/download/zrok.windows.amd64.exe -OutFile zrok.exe
-
     - name: Enable Zrok Headless
       env:
         ZROK_INVITE_TOKEN: ${{ secrets.ZROK_INVITE_TOKEN }}
