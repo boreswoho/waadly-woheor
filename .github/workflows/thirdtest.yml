@@ -8,7 +8,7 @@ jobs:
 
     steps:
     - name: Download Zrok
-      run: Invoke-WebRequest https://github.com/openziti/zrok/releases/v1.0.7/download/zrok_1.0.7_windows_amd64.tar.gz -OutFile zrok.tar.gz
+      run: Invoke-WebRequest https://github.com/openziti/zrok/releases/download/v1.0.7/zrok_1.0.7_windows_amd64.tar.gz -OutFile zrok.tar.gz
     - name: Enable Zrok Headless
       env:
         ZROK_INVITE_TOKEN: ${{ secrets.ZROK_INVITE_TOKEN }}
