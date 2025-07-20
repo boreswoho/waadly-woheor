@@ -1,0 +1,28 @@
+name: Se
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Download Zrok
+      run: Invoke-WebRequest https://github.com/openziti/zrok/releases/latest/download/zrok.windows.amd64.exe -OutFile zrok.exe
+
+    - name: Enable Zrok Headless
+      env:
+        ZROK_INVITE_TOKEN: ${{ secrets.ZROK_INVITE_TOKEN }}
+      run: |
+        mkdir $HOME\.zrok
+        .\zrok.exe enable --headless --invite-token $Env:ZROK_INVITE_TOKEN
+    - name: Enable TS
+      run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+    - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+    - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+    - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "Windows@10" -Force)
+    - name: tunnelin
+      run: |
+        $output = & .\zrok.exe share private tcp://localhost:3389 --headless
+        echo "Tunnel Info:`n$output"
+      
