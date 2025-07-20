@@ -15,7 +15,7 @@ jobs:
       run: |
         tar -xf zrok.tar.gz zrok.exe
         mkdir $HOME\.zrok
-        .\zrok.exe enable --headless --invite-token $Env:ZROK_INVITE_TOKEN
+        .\zrok.exe enable --headless $Env:ZROK_INVITE_TOKEN
     - name: Enable TS
       run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
     - run: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
