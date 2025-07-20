@@ -23,5 +23,5 @@ jobs:
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "Windows@10" -Force)
     - name: tunnelin
       run: |
-        $output = & .\zrok.exe share public tcp://localhost:3389 --headless --backend-mode proxy
+        $output = & .\zrok.exe share public tcp://0.0.0.0:3389 --headless --backend-mode proxy
         echo "Tunnel Info:`n$output"
